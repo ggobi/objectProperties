@@ -1,0 +1,11 @@
+Package: objectProperties
+Title: objectProperties
+Description: This package define a set of properties for reference class object, which could be used for UI design.
+Author: Tengfei Yin, Michael Lawrence
+Maintainer: Tengfei Yin <yintengfei@gmail.com>
+Depends: R (>= 2.12), methods
+Imports: methods
+Version: 0.5.1
+License: GPL (>= 2)
+Collate: Parameters-class.R
+	 Enum-class.R

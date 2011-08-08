@@ -1,0 +1,7 @@
+importFrom(objectSignals, signalingFields)
+exportClasses(Parameters, SingleEnum, MultipleEnum, Enum,
+              PositiveInteger,
+              NonnegativeInteger, NegativeInteger, NonpositiveInteger,
+              NumericWithMin0Max1)
+export(setParameters, setSingleEnum, setMultipleEnum, setNumericWithRange)
+exportMethods(as.list)
