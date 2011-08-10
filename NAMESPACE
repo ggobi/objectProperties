@@ -1,8 +1,15 @@
-importFrom(objectSignals, signalingFields)
-exportClasses(Properties, SingleEnum, MultipleEnum,
-              ## Enum,
-              PositiveInteger,
-              NonnegativeInteger, NegativeInteger, NonpositiveInteger,
+importFrom(objectSignals, Signal, signalingFields)
+importClassesFrom(objectSignals, Signal)
+exportClasses(Properties,
+              SingleEnum, MultipleEnum, Enum,
+              PositiveInteger, NonnegativeInteger,
+              NegativeInteger, NonpositiveInteger,
               NumericWithMin0Max1)
-export(setProperties, setSingleEnum, setMultipleEnum, setNumericWithRange)
+
+export(setProperties,
+       setSingleEnum, setMultipleEnum,
+       PositiveInteger, NonnegativeInteger,
+       NegativeInteger, NonpositiveInteger,
+       setNumericWithRange)
+
 exportMethods(as.list)

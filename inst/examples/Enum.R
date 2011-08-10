@@ -10,9 +10,10 @@ obj <- new(ShapeEnumClassName, "circle")
 ## this is equivilent to
 obj <- new("ShapeSingleEnum", "circle")
 obj
-## Not run:
-obj <- new("ShapeSingleEnum", "square") # Error message
-## End(Not run)
+
+## Error message
+err <- try(obj <- new("ShapeSingleEnum", "square"), silent = TRUE)
+print(err)
 
 obj <- "triangle" # doesn't check, because it's not signal field.
 obj # it's not SingleEnum object anymore, be careful.
@@ -26,7 +27,8 @@ pars$shape
 pars$shape <- "line"
 pars$shape
 class(pars$shape)# still a SingleEnum
-pars$shape <- "square" #Error it try to validate the input.
+err <- try(pars$shape <- "square", silent = TRUE) ## Error it try to validate the input.
+print(err)
 pars$shape <- "line" # works
 
 ## ----------------------------------------------------------------------
@@ -41,7 +43,8 @@ obj <- new(ShapeEnumClassName, c("circle", "line"))
 obj <- new("ShapeMultipleEnum", c("circle", "line"))
 
 obj
-obj <- new("ShapeMultipleEnum", "square") # Error message
+err <- try(obj <- new("ShapeMultipleEnum", "square"), silent = TRUE) # Error message
+print(err)
 
 obj <- "triangle" # doesn't check, because it's not signal field.
 obj # it's not SingleEnum object anymore, be careful.
@@ -55,5 +58,6 @@ pars$shape
 pars$shape <- c("line", "rectangle")
 pars$shape
 class(pars$shape)# still a MultipleEnum
-pars$shape <- c("square", "line") #Error message, because it try to validate the input.
+err <- try(pars$shape <- c("square", "line"), silent = TRUE) #Error message, because it try to validate the input.
+print(err)
 

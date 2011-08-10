@@ -4,7 +4,7 @@ setClass("SingleEnum", representation(levels = "character"),
 setClass("MultipleEnum", representation(levels = "character"),
          contains = c("character"))
 
-## setClassUnion("Enum", c("SingleEnum","MultipleEnum"))
+setClassUnion("Enum", c("SingleEnum","MultipleEnum"))
 
 ##' R functions often have parameters with enumerated values. These are
 ##' typically passed as a character vector and resolved using
@@ -22,7 +22,7 @@ setClass("MultipleEnum", representation(levels = "character"),
 ##' it support multiple choices. So for GUI level, it could be used for creating
 ##' check boxes.
 ##' 
-##' The \code{Enum} class is a Class union for \code{SingleEnum} and \{MultipleEnum}
+##' The \code{Enum} class is a Class union for \code{SingleEnum} and \code{MultipleEnum}
 ##' @title Enumerated types
 ##' @param prefix Prefix for new subclass of \code{SingleEnum} or \code{MultipleEnum},
 ##' e.g. if prefix is "Geom", the new subclass name would be \code{GeomSingleEnum} after
@@ -31,12 +31,14 @@ setClass("MultipleEnum", representation(levels = "character"),
 ##' @param contains What class does this class extended besides \code{SingleEnum}.
 ##' @param where the environment in which to store or remove the definition.
 ##' Defaults to the top-level environment of the calling function.
-##' @return \code{setSingleEnum} return a class name for \code{SingleEnum} subclass.
-##' \code{setMultipleEnum} return a class name for \code{MultipleEnum} subclass.
-##' @seealso \code{\link{setMultipleEnum}}
+##' @return \code{setSingleEnum} return a class name for \code{SingleEnum}
+##' subclass.\code{setMultipleEnum} return a class name for \code{MultipleEnum} subclass.
+##' @example objectProperties/inst/examples/Enum.R
 ##' @aliases SingleEnum-class
 ##' @aliases MultipleEnum-class
 ##' @aliases setMultipleEnum
+##' @aliases setSingleEnum
+##' @aliases Enum-class
 ##' @rdname  Enum-class
 ##' @author Tengfei Yin, Michael Lawrence
 setSingleEnum <- function(prefix, levels,
