@@ -61,3 +61,11 @@ class(pars$shape)# still a MultipleEnum
 err <- try(pars$shape <- c("square", "line"), silent = TRUE) #Error message, because it try to validate the input.
 print(err)
 
+## Color Single Enum
+bgColorSingleEnum <- setColorEnum("bgColor", levels = c("black", "white", "gray"))
+obj <- new(bgColorSingleEnum, "black")
+obj
+## Glyph Single Enum
+PointSizeSingleEnum <- setGlyphEnum("PointSize", levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
+obj <- new(PointSizeSingleEnum, "1")
+obj
