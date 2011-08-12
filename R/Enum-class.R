@@ -65,7 +65,9 @@ setClassUnion("Enum", c("SingleEnum","MultipleEnum"))
 ##' @aliases Enum-class
 ##' @aliases Color-class
 ##' @aliases ColorEnum-class
+##' @aliases setColorEnum
 ##' @aliases GlyphEnum-class
+##' @aliases setGlyphEnum
 ##' @rdname  Enum-class
 ##' @author Tengfei Yin, Michael Lawrence
 setSingleEnum <- function(prefix, levels,
