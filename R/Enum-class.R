@@ -57,7 +57,9 @@ setClassUnion("Enum", c("SingleEnum","MultipleEnum"))
 ##' Defaults to the top-level environment of the calling function.
 ##' @return \code{setSingleEnum} return a class name for \code{SingleEnum}
 ##' subclass.\code{setMultipleEnum} return a class name for \code{MultipleEnum} subclass.
-##' @example objectProperties/inst/examples/Enum.R
+##' \code{setColorEnum} return a class name for \code{ColorEnum} subclass which is also
+##' a \code{SingleEnum}. \code{setGlyphEnum} return a class name for \code{GlyphEnum}
+##' subclass which is also a \code{SingleEnum}.
 ##' @aliases SingleEnum-class
 ##' @aliases MultipleEnum-class
 ##' @aliases setMultipleEnum
@@ -70,6 +72,7 @@ setClassUnion("Enum", c("SingleEnum","MultipleEnum"))
 ##' @aliases setGlyphEnum
 ##' @rdname  Enum-class
 ##' @author Tengfei Yin, Michael Lawrence
+##' @example objectProperties/inst/examples/Enum.R
 setSingleEnum <- function(prefix, levels,
                           contains = character(),
                     where = topenv(parent.frame())) {
