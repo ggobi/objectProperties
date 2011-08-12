@@ -7,7 +7,7 @@ setClass("PositiveInteger", contains = c("integer"),
 ##' This set of classes define different numerical object with restriction on it.
 ##' 
 ##' These special classes could be registered as signaling fields by calling
-##' \code{signalingFields} or \code{signalingField}, or using \code{setParameters},
+##' \code{signalingFields} or \code{signalingField}, or using \code{setProperties},
 ##' so they could be used for GUI design, and changing of the fields automatically
 ##' validate the current value
 ##' 
@@ -92,7 +92,7 @@ NonpositiveInteger <- function(object){
 ##' so it will support validation on the input.
 ##'
 ##' The purpose of creating such a class genenrator is to define a special
-##' range properties which could be set as singaling field, such as \code{Parameters}
+##' range properties which could be set as singaling field, such as \code{Properties}
 ##' object. Then validation will be turned on automatically to make sure the current
 ##' value is within the defined range. This is particular useful when you try to
 ##' design a slider widget of such a property, let's say, a alpha blending slider.
