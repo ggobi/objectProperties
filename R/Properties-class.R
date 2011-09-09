@@ -58,6 +58,7 @@ setAs("Properties", "list", function(from) {
 ##' defined with this specified name, whichever the properties changed, this signal
 ##' will be emitted and the name of trigered field will be captured. Please check the
 ##' example.
+##' @param suffix The class name suffix. By convention, this is "Properties".
 ##' @return A reference class generator for subclass.
 ##' @example objectProperties/inst/examples/setProperties.R
 ##' @aliases Properties-class
@@ -66,10 +67,12 @@ setAs("Properties", "list", function(from) {
 setProperties <- function(prefix, properties,
                           contains = character(),
                           where = topenv(parent.frame()),
-                          signalName = "changed"){
+                          signalName = "changed",
+                          suffix = "Properties")
+{
 
   contains = c(contains, "Properties")
-  paramClassName <- paste(prefix, "Properties", sep = "")
+  paramClassName <- paste(prefix, suffix, sep = "")
 ### FIXME: temporary workaround for setRefClass not accepting empty fields list
   if (length(properties))
     setRefClass(paramClassName,
