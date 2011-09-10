@@ -88,7 +88,7 @@ setProperties <- function(prefix, properties,
 ##' obj <- filt.gen$new(cutoff = 0, weight = 1)
 ##' obj$properties()
 ##' as.list(obj)
-setMethod("as.list", "Properties", function(x){
+setMethod("as.list", "Properties", function(x) {
   x <- as(x, "list")
   x
 })
@@ -102,3 +102,6 @@ setAs("Properties", "list", function(from) {
   lst
 })
 
+setMethod("show", "Properties", function(object) {
+  show(as.list(object))
+})
