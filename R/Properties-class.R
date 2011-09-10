@@ -34,20 +34,22 @@ setRefClass("Properties", contains = "VIRTUAL",
 ##' as.list on the object}
 ##' }
 ##' @title Properties class
-##' @param prefix Prefix for new subclass of \code{Properties}, e.g. if prefix is
-##' "Graphic", the new subclass name would be \code{GraphicProperties}.
+##' @param prefix Prefix for new subclass of \code{Properties},
+##' e.g. if prefix is "Graphic", the new subclass name would be
+##' \code{GraphicProperties}.
 ##' @param properties A list of properties with the names
 ##' and class it belongs to, those properties are set as signaling fields.
-##' @param contains What class does this class extended besides \code{Properties}.
+##' @param contains What class does this class extended besides
+##' \code{Properties}.
 ##' @param where the environment in which to store or remove the definition.
 ##' Defaults to the top-level environment of the calling function
 ##' (the global environment for ordinary computations, and the
 ##' environment or namespace of a package in the source code for
 ##' that package).
-##' @param signalName Default name is "changed". A global signal for properties are
-##' defined with this specified name, whichever the properties changed, this signal
-##' will be emitted and the name of trigered field will be captured. Please check the
-##' example.
+##' @param signalName Default name is "changed". A global signal for
+##' properties are defined with this specified name, whichever the
+##' properties changed, this signal will be emitted and the name of
+##' trigered field will be captured. Please check the example.
 ##' @param suffix The class name suffix. By convention, this is "Properties".
 ##' @return A reference class generator for subclass.
 ##' @example objectProperties/inst/examples/setProperties.R
