@@ -4,22 +4,28 @@
 setRefClass("Properties", contains = "VIRTUAL",
             methods = list(
               properties = function() {
-                flds <- getRefClass()$fields()
-                flds <- grep("^\\.init\\.", grep("^\\.", flds, value = TRUE),
-                             invert = TRUE, value = TRUE)
-                names(flds) <- sub("^\\.", "", names(flds))
-                flds
+                fieldClasses <- getRefClass()$fields()
+                fieldNames <- names(fieldClasses)
+                fieldNames <- grep("^\\.init\\.",
+                                   grep("^\\.", fieldNames, value = TRUE),
+                                   invert = TRUE, value = TRUE)
+                fieldClasses <- fieldClasses[fieldNames]
+                names(fieldClasses) <- sub("^\\.", "", fieldNames)
+                fieldClasses[!fieldClasses %in% "Signal"]
               }))
 
 ##' Encapsulates the properties for an operation.
 ##'
-##' Each type of object should have a corresponding subclass of Properties.
-##' \code{setProperties} is a convenient subclass generator for class
-##' \code{Properties}, user could pass a list of different types of variables
-##' and return a specific \code{Properties} subclass generator, this new defined object
-##' store those properties as signaling fields, so it's able to connect signal to
-##' listen to individual property or the set as a whole. In this way, validation is
-##' enabled when user try to set the properties to new value.
+##' Each type of object should have a corresponding subclass of
+##' Properties.  \code{setProperties} is a convenient subclass
+##' generator for class \code{Properties}. The user may pass a named
+##' list of classes, in the same form as for the fields of
+##' \code{\link[methods]{setRefClass}}.  This function returns a
+##' specific \code{Properties} subclass generator, instances of which
+##' store those properties. Whenever a property is modified, a signal,
+##' named in the form \code{[property]Changed}, will be emitted . If
+##' any property is modified, the signal named according to
+##' \code{signalName} is emitted. 
 ##' 
 ##' \code{Properties} object has following methods
 ##' \describe{
