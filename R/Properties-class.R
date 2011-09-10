@@ -1,5 +1,5 @@
 ### =========================================================================
-### Parameters objects
+### Properties objects
 ### -------------------------------------------------------------------------
 setRefClass("Properties", contains = "VIRTUAL",
             methods = list(
