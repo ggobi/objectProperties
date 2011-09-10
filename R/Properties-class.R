@@ -3,29 +3,13 @@
 ### -------------------------------------------------------------------------
 setRefClass("Properties", contains = "VIRTUAL",
             methods = list(
-              properties = function(){
+              properties = function() {
                 flds <- getRefClass()$fields()
-                idx <- !(flds %in%
-                         c("activeBindingFunction",
-                           "Signal","function",
-                           "functionORNULL"))
-                flds <- flds[idx]
-                idx <- !grepl("^\\.init.", names(flds))
-                flds <- flds[idx]
-                cls <- as.character(flds)
-                valnames <- gsub("\\.","",names(flds))
-                names(cls) <- valnames
-                cls
+                flds <- grep("^\\.init\\.", grep("^\\.", flds, value = TRUE),
+                             invert = TRUE, value = TRUE)
+                names(flds) <- sub("^\\.", "", names(flds))
+                flds
               }))
-
-setAs("Properties", "list", function(from) {
-  nms <- from$properties()
-  lst <- lapply(names(nms), function(x){
-    from$field(x)
-  })
-  names(lst) <- names(nms)
-  lst
-})
 
 ##' Encapsulates the properties for an operation.
 ##'
@@ -106,4 +90,12 @@ setMethod("as.list", "Properties", function(x){
   x
 })
 
+setAs("Properties", "list", function(from) {
+  nms <- from$properties()
+  lst <- lapply(names(nms), function(x){
+    from$field(x)
+  })
+  names(lst) <- names(nms)
+  lst
+})
 
