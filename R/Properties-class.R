@@ -58,20 +58,15 @@ setRefClass("Properties", contains = "VIRTUAL",
 ##' @author Tengfei Yin, Michael Lawrence
 setProperties <- function(prefix, properties,
                           contains = character(),
-                          where = topenv(parent.frame()),
                           signalName = "changed",
-                          suffix = "Properties")
+                          suffix = "Properties",
+                          where = topenv(parent.frame()))
 {
-
   contains = c(contains, "Properties")
   paramClassName <- paste(prefix, suffix, sep = "")
-### FIXME: temporary workaround for setRefClass not accepting empty fields list
-  if (length(properties))
-    setRefClass(paramClassName,
-                fields = signalingFields(properties, signalName = signalName),
-                contains = contains, where = where)
-  else
-    setRefClass(paramClassName, contains = contains, where = where)
+  fields <- signalingFields(properties, signalName = signalName)
+  setRefClass(paramClassName, fields = fields, contains = contains,
+              where = where)
 }
 
 ##' Coercion from \code{Properties} to \code{list}.
