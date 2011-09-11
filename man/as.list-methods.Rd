@@ -1,6 +1,7 @@
 \name{as.list-methods}
-\alias{as.list,Properties-method}
+\alias{as.list,PropertySet-method}
 \alias{as.list}
+\alias{show,PropertySet-method}
 \title{Coercion to \code{list}}
 \description{Coercion from \code{Properties} to \code{list}.}
 \details{This coersion only return a list of properties instances. 
@@ -11,11 +12,13 @@ not properties.}
 \docType{methods}
 \arguments{\item{x}{A \code{Properties} object.}
 }
-\examples{## setting as properties
-filt.gen <- setProperties("Filter", list(cutoff = "NonnegativeInteger",
-weight = "PositiveInteger"))
-## new property instance
-obj <- filt.gen$new(cutoff = 0, weight = 1)
+\examples{
+filt.gen <- setRefClass("Filter", properties(list(cutoff = "NonnegativeInteger",
+                                                weight = "PositiveInteger")),
+                                                       contains = "PropertySet")
+obj <- filt.gen$new(cutoff = NonnegativeInteger(0),
+                    weight = PositiveInteger(1))
 obj$properties()
-as.list(obj)}
+as.list(obj)
+}
 
