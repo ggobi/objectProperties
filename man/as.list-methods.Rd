@@ -15,7 +15,7 @@ not properties.}
 \examples{
 filt.gen <- setRefClass("Filter", properties(list(cutoff = "NonnegativeInteger",
                                                 weight = "PositiveInteger")),
-                                                       contains = "PropertySet")
+                        contains = "PropertySet")
 obj <- filt.gen$new(cutoff = NonnegativeInteger(0),
                     weight = PositiveInteger(1))
 obj$properties()
