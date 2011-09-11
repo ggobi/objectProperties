@@ -74,10 +74,11 @@ properties <- function(fields, prototype = list(), signalName = "changed",
         .fieldName
       } else {
         if (!is.function(fieldClass)) {
-          if (!is(val, fieldClass))
+          coercedVal <- try(as(val, fieldClass, strict = FALSE), silent = TRUE)
+          if (inherits(coercedVal, "try-error"))
             stop("Cannot set an object of type '", class(val), "' on '",
-                 fieldName, "', a field of type '", fieldClass, "'")
-          else val <- as(val, fieldClass, strict = FALSE)
+                 fieldName, "', a property of type '", fieldClass, "'")
+          else val <- coercedVal
         }
         ## careful here; if field is active binding, it might not change
         oldVal <- .fieldName
