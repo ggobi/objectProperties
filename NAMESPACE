@@ -1,16 +1,16 @@
-importFrom(objectSignals, Signal, signalingFields)
-importClassesFrom(objectSignals, Signal)
-exportClasses(Properties, Color, ColorEnum, GlyphEnum,
+import(objectSignals)
+exportClasses(PropertySet, Color, ColorEnum, GlyphEnum,
               SingleEnum, MultipleEnum, Enum,
               PositiveInteger, NonnegativeInteger,
               NegativeInteger, NonpositiveInteger,
               NumericWithMin0Max1)
 
-export(setProperties,
-       setSingleEnum, setMultipleEnum,
+export(setSingleEnum, setMultipleEnum,
        setColorEnum, setGlyphEnum,
        PositiveInteger, NonnegativeInteger,
        NegativeInteger, NonpositiveInteger,
        setNumericWithRange)
 
 exportMethods(as.list)
+
+export(properties)
