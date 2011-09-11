@@ -14,10 +14,11 @@ setRefClass("Properties", contains = "VIRTUAL",
                 fieldClasses[!fieldClasses %in% "Signal"]
               }))
 
-##' Encapsulates the properties for an operation.
+##' The \code{Properties} class is a collection of properties. Useful
+##' for grouping properties within a class, e.g., for storing the
+##' parameters of some operation.
 ##'
-##' Each type of object should have a corresponding subclass of
-##' Properties.  \code{setProperties} is a convenient subclass
+##' \code{setProperties} is a convenient subclass
 ##' generator for class \code{Properties}. The user may pass a named
 ##' list of classes, in the same form as for the fields of
 ##' \code{\link[methods]{setRefClass}}.  This function returns a
