@@ -28,8 +28,9 @@ setClass("PositiveInteger", contains = c("integer"),
 ##' obj <- NegativeInteger(-1)
 ##' obj <- NonpositiveInteger(0)
 ##' ## setting as properties
-##' filt.gen <- setProperties("Filter", list(cutoff = "NonnegativeInteger",
-##' weight = "PositiveInteger"))
+##' filt.gen <- setRefClass("Filter",
+##'             properties(list(cutoff = "NonnegativeInteger",
+##'             weight = "PositiveInteger")), contains = "PropertySet")
 ##' ## new property instance
 ##' obj <- filt.gen$new(cutoff = 0, weight = 1)
 ##' obj$properties()
@@ -106,6 +107,7 @@ NonpositiveInteger <- function(object){
 ##' @aliases NumericWithMin0Max1-class
 ##' @aliases setNumericWithRange
 ##' @author Tengfei Yin
+##' @example objectProperties/inst/examples/setNumericWithRange.R
 setNumericWithRange <- function(prefix, min, max, where = topenv(parent.frame())){
   cls <- paste(prefix, "With", "Min", min, "Max", max, sep = "")
   setClass(cls, contains = "numeric",

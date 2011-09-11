@@ -38,7 +38,7 @@ setRefClass("PropertySet", contains = "VIRTUAL",
 ##' and individual signal.
 ##' @title Properties signaling fileds 
 ##' @param fields list of names of the field and associated fields class 
-##' @param prototype 
+##' @param prototype A list of values declaring a default value for a field.
 ##' @param signalName Default name is "changed". A global signal for
 ##' properties are defined with this specified name, whichever the
 ##' properties changed, this signal will be emitted and the name of

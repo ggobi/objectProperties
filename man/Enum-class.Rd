@@ -67,10 +67,11 @@ calling \code{setSingleEnum}.}
 \item{where}{the environment in which to store or remove the definition.
 Defaults to the top-level environment of the calling function.}
 }
-\examples{## ----------------------------------------------------------------------
+\examples{
+## ----------------------------------------------------------------------
 ##                   setSingleEnum
 ## ----------------------------------------------------------------------
-library(objectProperties)
+require(objectProperties)
 ShapeEnumClassName <- setSingleEnum("Shape",
                                 levels = c("circle", "line", "rectangle"))
 
@@ -81,8 +82,7 @@ obj <- new("ShapeSingleEnum", "circle")
 obj
 
 ## Error message
-err <- try(obj <- new("ShapeSingleEnum", "square"), silent = TRUE)
-print(err)
+## obj <- new("ShapeSingleEnum", "square")
 
 obj <- "triangle" # doesn't check, because it's not signal field.
 obj # it's not SingleEnum object anymore, be careful.
@@ -90,14 +90,13 @@ class(obj) # just character
 
 ## only set it as signaling field, allow you to assign the value and
 ## validate it.
-par.gen <- setProperties("Graph", list(shape = "ShapeSingleEnum"))
+par.gen <- setRefClass("Graph", properties(list(shape = "ShapeSingleEnum")))
 pars <- par.gen$new(shape = new("ShapeSingleEnum", "circle"))
 pars$shape
 pars$shape <- "line"
 pars$shape
 class(pars$shape)# still a SingleEnum
-err <- try(pars$shape <- "square", silent = TRUE) ## Error it try to validate the input.
-print(err)
+## pars$shape <- "square" ## Error it try to validate 
 pars$shape <- "line" # works
 
 ## ----------------------------------------------------------------------
@@ -112,8 +111,7 @@ obj <- new(ShapeEnumClassName, c("circle", "line"))
 obj <- new("ShapeMultipleEnum", c("circle", "line"))
 
 obj
-err <- try(obj <- new("ShapeMultipleEnum", "square"), silent = TRUE) # Error message
-print(err)
+## new("ShapeMultipleEnum", "square") # Error message
 
 obj <- "triangle" # doesn't check, because it's not signal field.
 obj # it's not SingleEnum object anymore, be careful.
@@ -121,14 +119,15 @@ class(obj) # just character
 
 ## only set it as signaling field, allow you to assign the value and
 ## validate it.
-par.gen <- setProperties("Graph", list(shape = "ShapeMultipleEnum"))
+par.gen <- setRefClass("Graph",
+                       properties(list(shape = "ShapeMultipleEnum")))
 pars <- par.gen$new(shape = new("ShapeMultipleEnum", c("circle", "line")))
 pars$shape
 pars$shape <- c("line", "rectangle")
 pars$shape
 class(pars$shape)# still a MultipleEnum
-err <- try(pars$shape <- c("square", "line"), silent = TRUE) #Error message, because it try to validate the input.
-print(err)
+## pars$shape <- c("square", "line")
+#Error message, because it try to validate the input.
 
 ## Color Single Enum
 bgColorSingleEnum <- setColorEnum("bgColor", levels = c("black", "white", "gray"))
@@ -137,5 +136,6 @@ obj
 ## Glyph Single Enum
 PointSizeSingleEnum <- setGlyphEnum("PointSize", levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
 obj <- new(PointSizeSingleEnum, "1")
-obj}
+obj
+}
 

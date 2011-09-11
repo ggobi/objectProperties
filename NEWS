@@ -1,0 +1,13 @@
+============================================================
+Major change in different version
+============================================================
+
+------------------------------------------------------------
+Version 0.5.5
+------------------------------------------------------------
+* remove setProperties
+* Adding properties function which is a old signalingFields 
+  combining with signalingField
+* Adding coerction in properties().
+
+

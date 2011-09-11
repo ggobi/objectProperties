@@ -26,8 +26,7 @@ pars$shape
 pars$shape <- "line"
 pars$shape
 class(pars$shape)# still a SingleEnum
-err <- try(pars$shape <- "square", silent = TRUE) ## Error it try to validate the input.
-print(err)
+## pars$shape <- "square" ## Error it try to validate 
 pars$shape <- "line" # works
 
 ## ----------------------------------------------------------------------
@@ -42,8 +41,7 @@ obj <- new(ShapeEnumClassName, c("circle", "line"))
 obj <- new("ShapeMultipleEnum", c("circle", "line"))
 
 obj
-err <- try(obj <- new("ShapeMultipleEnum", "square"), silent = TRUE) # Error message
-print(err)
+## new("ShapeMultipleEnum", "square") # Error message
 
 obj <- "triangle" # doesn't check, because it's not signal field.
 obj # it's not SingleEnum object anymore, be careful.
@@ -51,14 +49,15 @@ class(obj) # just character
 
 ## only set it as signaling field, allow you to assign the value and
 ## validate it.
-par.gen <- setProperties("Graph", list(shape = "ShapeMultipleEnum"))
+par.gen <- setRefClass("Graph",
+                       properties(list(shape = "ShapeMultipleEnum")))
 pars <- par.gen$new(shape = new("ShapeMultipleEnum", c("circle", "line")))
 pars$shape
 pars$shape <- c("line", "rectangle")
 pars$shape
 class(pars$shape)# still a MultipleEnum
-err <- try(pars$shape <- c("square", "line"), silent = TRUE) #Error message, because it try to validate the input.
-print(err)
+## pars$shape <- c("square", "line")
+#Error message, because it try to validate the input.
 
 ## Color Single Enum
 bgColorSingleEnum <- setColorEnum("bgColor", levels = c("black", "white", "gray"))

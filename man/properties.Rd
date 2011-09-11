@@ -14,7 +14,7 @@ and individual signal.}
 \value{A list that is easily concatenated into the field list}
 \author{Michael Lawrence, Tengfei Yin}
 \arguments{\item{fields}{list of names of the field and associated fields class}
-\item{prototype}{}
+\item{prototype}{A list of values declaring a default value for a field.}
 \item{signalName}{Default name is "changed". A global signal for
 properties are defined with this specified name, whichever the
 properties changed, this signal will be emitted and the name of
