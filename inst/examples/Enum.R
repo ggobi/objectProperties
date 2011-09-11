@@ -1,7 +1,7 @@
 ## ----------------------------------------------------------------------
 ##                   setSingleEnum
 ## ----------------------------------------------------------------------
-library(objectProperties)
+require(objectProperties)
 ShapeEnumClassName <- setSingleEnum("Shape",
                                 levels = c("circle", "line", "rectangle"))
 
@@ -12,8 +12,7 @@ obj <- new("ShapeSingleEnum", "circle")
 obj
 
 ## Error message
-err <- try(obj <- new("ShapeSingleEnum", "square"), silent = TRUE)
-print(err)
+## obj <- new("ShapeSingleEnum", "square")
 
 obj <- "triangle" # doesn't check, because it's not signal field.
 obj # it's not SingleEnum object anymore, be careful.
@@ -21,7 +20,7 @@ class(obj) # just character
 
 ## only set it as signaling field, allow you to assign the value and
 ## validate it.
-par.gen <- setProperties("Graph", list(shape = "ShapeSingleEnum"))
+par.gen <- setRefClass("Graph", properties(list(shape = "ShapeSingleEnum")))
 pars <- par.gen$new(shape = new("ShapeSingleEnum", "circle"))
 pars$shape
 pars$shape <- "line"
