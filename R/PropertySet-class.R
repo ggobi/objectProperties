@@ -1,6 +1,58 @@
 ### =========================================================================
 ### PropertySet objects
 ### -------------------------------------------------------------------------
+
+## Conceptual crisis
+
+## A property is a special field that supports:
+## - default value
+## - changed signal
+## - automatic coercion
+
+## Do we want to make any of those features optional? A default value
+## is optional, but signals are always emitted and coercion always
+## occurs. This is in-line with GTK+ and is probably OK for now.
+
+## Our initial motivation for properties was that there would be a
+## data model that was completely defined by a set of properties. This
+## is the role played by PropertySet. However, it is also useful to
+## define properties within a larger class. In that case, how to
+## retrieve the set of properties (as separate from the fields)? Is it
+## needed? Good question. The only time we have seen a need for
+## introspecting properties has been when generating interfaces for
+## e.g. GGobiTransform parameters or ProxyGRanges parameters. Cranvas
+## would probably use them for a BrushParameters class. So probably not.
+
+## Signal thoughts: We currently have a global signal 'changed(name)',
+## as well as individual signals '[name]Changed'. This is convenient,
+## because the user can listen to single property changes, or all
+## changes. However, it is complicated, because it requires us to
+## synchronize both signals. Otherwise, if something has changed in
+## the underlying data of a dynamic data model, the class will need to
+## emit both signals.
+
+## Here is another thought: do we want to define properties as a group
+## or individually? This is more or less signalingField()
+## vs. signalingFields(). Compare their syntax:
+
+## setRefClass("ClassWithProps", property("A", "character", default = "foo"),
+##             property("B", "integer", default = 0L))
+## vs:
+## setRefClass("ClassWithProps",
+##             properties(list(A = "character", B = "integer"),
+##                        prototype = list(A = "foo", B = 0L))
+
+## Probably like the second one best. It is consistent with setClass()
+## and makes the prototype more obvious. And it's just cleaner.
+
+## Is there still a need for signalingField[s], given properties()?
+## The functionality would be largely redundant, so no.
+
+## Should the global signal be defined in PropertySet, rather than via
+## properties()? The weird thing about a global signal is that it
+## pertains to a "set" of properties, even though there is no formal
+## "set" when not using PropertySet. We should probably move it.
+
 ##' The \code{PropertySet} class is a collection of properties. Useful
 ##' for grouping properties within a class, e.g., for storing the
 ##' parameters of some operation.
@@ -43,16 +95,11 @@ setRefClass("PropertySet", contains = "VIRTUAL",
 ##' properties are defined with this specified name, whichever the
 ##' properties changed, this signal will be emitted and the name of
 ##' trigered field will be captured. Please check the example.
-##' @param globalSignal Logical value. Default is based on how many
-##' fields passed, if it's more than one, then set to TRUE and create
-##' a global signal specified by signalName. If FALSE, this will not
-##' create any global signal.
 ##' @return A list that is easily concatenated into the field list
 ##' @author Michael Lawrence, Tengfei Yin
 ##' @example objectProperties/inst/examples/properties.R
 ##' @export
-properties <- function(fields, prototype = list(), signalName = "changed",
-                       globalSignal = length(fields) >1)
+properties <- function(fields, prototype = list(), signalName = "changed")
 {
   if (!length(fields))
     return(list())
@@ -62,8 +109,7 @@ properties <- function(fields, prototype = list(), signalName = "changed",
   if (any(sapply(fields, is.function) & hasPrototype))
     stop("An active binding field cannot have a prototype")
   activeFields <- mapply(function(fieldClass, fieldName, .fieldName, initName,
-                                  hasPrototype, prototype, thisSignal,
-                                  globalSignal)
+                                  hasPrototype, prototype, thisSignal)
   {
     as.function(c(alist(val=), substitute({
       if (missing(val)) {
@@ -85,8 +131,7 @@ properties <- function(fields, prototype = list(), signalName = "changed",
         .fieldName <<- val
         if (hasPrototype) initName <<- TRUE
         if (!identical(oldVal, .fieldName)) {
-          if(globalSignal)
-            signalName$emit(fieldName)
+          signalName$emit(fieldName)
           thisSignal$emit()
         }
       }
@@ -96,26 +141,18 @@ properties <- function(fields, prototype = list(), signalName = "changed",
             initName = as.name(initName),
             hasPrototype = hasPrototype,
             prototype = prototype,
-            signalName = as.name(signalName),
-            globalSignal = globalSignal))))
+            signalName = as.name(signalName)))))
   }, fields, names(fields), .fieldNames, .initNames, hasPrototype,
-     prototype[names(fields)], paste(names(fields), "Changed", sep = ""),
-                         globalSignal)
+     prototype[names(fields)], paste(names(fields), "Changed", sep = ""))
   indSigs <- lapply(names(fields), function(nm) {
     nm <- paste(nm, "Changed", sep = "")
     fieldWithPrototype(nm, "Signal", Signal())
   })
-  if(globalSignal)
-    c(activeFields, structure(fields, names = .fieldNames),
-      structure(rep("logical", sum(hasPrototype)),
-                names = .initNames[hasPrototype]),
-      fieldWithPrototype(signalName, "Signal", Signal(name)),
-      unlist(indSigs))
-  else
-    c(activeFields, structure(fields, names = .fieldNames),
-      structure(rep("logical", sum(hasPrototype)),
-                names = .initNames[hasPrototype]),
-      unlist(indSigs))
+  c(activeFields, structure(fields, names = .fieldNames),
+    structure(rep("logical", sum(hasPrototype)),
+              names = .initNames[hasPrototype]),
+    fieldWithPrototype(signalName, "Signal", Signal(name)),
+    unlist(indSigs))
 }
 
 ##' Coercion from \code{PropertySet} to \code{list}.
