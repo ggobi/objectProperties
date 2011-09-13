@@ -87,7 +87,7 @@ PropertySet_initSignals <- function(x) {
 ##' @author Michael Lawrence, Tengfei Yin
 ##' @example objectProperties/inst/examples/properties.R
 ##' @export
-properties <- function(fields, prototype = list())
+properties <- function(fields = list(), prototype = list())
 {
   if (!length(fields))
     return(list())
