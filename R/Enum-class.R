@@ -1,6 +1,12 @@
 setClass("SingleEnum", representation(levels = "character"),
          contains = c("character"))
 
+setMethod("initialize", "SingleEnum", function(.Object, ...) {
+  if (!length(list(...)))
+    callNextMethod(.Object, head(levels(.Object), 1))
+  else callNextMethod()
+})
+
 setClass("MultipleEnum", representation(levels = "character"),
          contains = c("character"))
 
