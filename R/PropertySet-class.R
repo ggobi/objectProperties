@@ -96,6 +96,9 @@ properties <- function(fields, prototype = list())
   hasPrototype <- names(fields) %in% names(prototype)
   if (any(sapply(fields, is.function) & hasPrototype))
     stop("An active binding field cannot have a prototype")
+  if (length(invalidPrototypes <- setdiff(names(prototype), names(fields))))
+    stop("Prototypes without matching property: ",
+         paste(invalidPrototypes, collapse = ", "))
   activeFields <- mapply(function(fieldClass, fieldName, .fieldName, initName,
                                   hasPrototype, prototype, thisSignal)
   {
