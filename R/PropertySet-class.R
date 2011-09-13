@@ -46,6 +46,8 @@ setRefClass("PropertySet", contains = "VIRTUAL",
 PropertySet_initSignals <- function(x) {
   ## forward individual signals to global signal
   propNames <- names(x$properties())
+  if (!length(propNames))
+    return()
   signalNames <- paste(propNames, "Changed", sep = "")
   lapply(signalNames, function(signalName) {
     signal <- x[[signalName]]
