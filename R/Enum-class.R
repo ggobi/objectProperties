@@ -75,12 +75,17 @@ setClassUnion("Enum", c("SingleEnum","MultipleEnum"))
 ##' @example objectProperties/inst/examples/Enum.R
 setSingleEnum <- function(prefix, levels,
                           contains = character(),
-                    where = topenv(parent.frame())) {
+                          where = topenv(parent.frame()))
+{
+  if (!length(levels))
+    stop("'levels' must contain at least one element")
   setClass(paste(prefix, "SingleEnum", sep = ""),
            prototype = prototype(levels = levels),
            contains = c("SingleEnum", contains),
            validity = function(object) {
-             if (!object %in% levels(object))
+             if (length(object) != 1L)
+               "object must be of length 1"
+             else if (!object %in% levels(object))
                paste("value '", object, "' does not belong to level set",
                      paste("\n(", toString(levels(object)),")"),
                      sep = "")
