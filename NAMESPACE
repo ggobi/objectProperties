@@ -13,4 +13,4 @@ export(setSingleEnum, setMultipleEnum,
 
 exportMethods(as.list)
 
-export(properties)
+export(properties, setPropertySet)

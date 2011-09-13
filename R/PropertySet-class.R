@@ -143,6 +143,31 @@ properties <- function(fields, prototype = list())
     unlist(indSigs))
 }
 
+##' A simple wrapper around \code{\link[methods]{setRefClass}} for
+##' creating subclasses of \code{\linkS4class{PropertySet}}. It
+##' ensures that all fields of the subclass are defined via
+##' \code{\link{properties}}.
+##'
+##' @title Subclassing PropertySet
+##' @param Class class name
+##' @param fields list of fields
+##' @param prototype list of default values, as in
+##' \code{\link[methods]{setClass}}.
+##' @param contains superclasses, one of which must extend PropertySet
+##' @param ... additional arguments to \code{setRefClass}
+##' @param where the environment in which to define the class
+##' @return the class generator object
+##' @author Michael Lawrence
+setPropertySet <- function(Class, fields = list(), prototype = list(),
+                           contains = "PropertySet", ...,
+                           where = topenv(parent.frame()))
+{
+  if (!any(sapply(contains, extends, "PropertySet")))
+    stop("At least one class in 'contains' must extend PropertySet")
+  setRefClass(Class, properties(fields, prototype), contains, ...,
+              where = where)
+}
+
 ##' Coercion from \code{PropertySet} to \code{list}.
 ##'
 ##' This coersion only return a list of properties instances. 
