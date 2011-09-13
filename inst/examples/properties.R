@@ -3,8 +3,7 @@ require(objectProperties)
 gplist <- list(size = "numeric",
                color = "character")
 GraphPars.gen <- setRefClass("GraphPropertySet",
-                             fields = properties(gplist,
-                               signalName = "GraphSignal"),
+                             fields = properties(gplist),
                              contains = "PropertySet")
 obj <- GraphPars.gen$new(size = 1, color = "red")
 class(obj)
@@ -14,30 +13,28 @@ obj$properties()
 as(obj, "list")
 as.list(obj)
 ## register global signals
-obj$GraphSignal$connect(function(name){
+obj$changed$connect(function(name) {
   cat(name, "changed\n")
 })
 obj$size <- 2
-## Passing one field more than one will not create global signal
+
+## If we do not inherit from PropertSet, there is no global signal
 gplist <- list(size = "numeric")
-GraphPars.gen <- setRefClass("GraphPropertySet",
-                             fields = properties(gplist,
-                               signalName = "GraphSignal"),
-                             contains = "PropertySet")
+GraphPars.gen <- setRefClass("GraphProperties",
+                             fields = properties(gplist))
 obj <- GraphPars.gen$new(size = 1)
-## obj$GraphSignal is not there
+## obj$GraphSignal is not there, but sizeChanged remains
 obj$sizeChanged$connect(function(){
   print("size changed")
 })
-
 obj$size <- 3
 
-## globalSignal set to FALSE
+## We can pass default values in 'prototype'
 gplist <- list(size = "numeric",
                color = "character")
 GraphPars.gen <- setRefClass("GraphPropertySet",
                              fields = properties(gplist,
-                               signalName = "GraphSignal",
-                               globalSignal = FALSE))
-obj <- GraphPars.gen$new(size = 1, color = "red")
-## obj$GraphSignal is not there even though we have multiple fields
+                               prototype = list(size = 1, color = "red")),
+                             contains = "PropertySet")
+obj <- GraphPars.gen$new()
+obj

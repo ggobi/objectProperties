@@ -2,71 +2,25 @@
 ### PropertySet objects
 ### -------------------------------------------------------------------------
 
-## Conceptual crisis
-
-## A property is a special field that supports:
-## - default value
-## - changed signal
-## - automatic coercion
-
-## Do we want to make any of those features optional? A default value
-## is optional, but signals are always emitted and coercion always
-## occurs. This is in-line with GTK+ and is probably OK for now.
-
-## Our initial motivation for properties was that there would be a
-## data model that was completely defined by a set of properties. This
-## is the role played by PropertySet. However, it is also useful to
-## define properties within a larger class. In that case, how to
-## retrieve the set of properties (as separate from the fields)? Is it
-## needed? Good question. The only time we have seen a need for
-## introspecting properties has been when generating interfaces for
-## e.g. GGobiTransform parameters or ProxyGRanges parameters. Cranvas
-## would probably use them for a BrushParameters class. So probably not.
-
-## Signal thoughts: We currently have a global signal 'changed(name)',
-## as well as individual signals '[name]Changed'. This is convenient,
-## because the user can listen to single property changes, or all
-## changes. However, it is complicated, because it requires us to
-## synchronize both signals. Otherwise, if something has changed in
-## the underlying data of a dynamic data model, the class will need to
-## emit both signals.
-
-## Here is another thought: do we want to define properties as a group
-## or individually? This is more or less signalingField()
-## vs. signalingFields(). Compare their syntax:
-
-## setRefClass("ClassWithProps", property("A", "character", default = "foo"),
-##             property("B", "integer", default = 0L))
-## vs:
-## setRefClass("ClassWithProps",
-##             properties(list(A = "character", B = "integer"),
-##                        prototype = list(A = "foo", B = 0L))
-
-## Probably like the second one best. It is consistent with setClass()
-## and makes the prototype more obvious. And it's just cleaner.
-
-## Is there still a need for signalingField[s], given properties()?
-## The functionality would be largely redundant, so no.
-
-## Should the global signal be defined in PropertySet, rather than via
-## properties()? The weird thing about a global signal is that it
-## pertains to a "set" of properties, even though there is no formal
-## "set" when not using PropertySet. We should probably move it.
-
-##' The \code{PropertySet} class is a collection of properties. Useful
-##' for grouping properties within a class, e.g., for storing the
-##' parameters of some operation.
+##' The \code{PropertySet} class is a collection of properties and is
+##' useful as a data model, e.g., for storing the parameters of some
+##' operation.
 ##'
-##' \code{PropertySet} object has following methods \describe{
-##' \item{properties()}{Return the defined properties name and class.
-##' You can also coerce the \code{PropertySet} object to a list by
-##' calling as.list on the object}
+##' \code{PropertySet} object has following methods, where \code{x} is
+##' a \code{PropertySet} object:
+##' 
+##' \describe{
+##'   \item{}{\code{x$properties()}: Return the classes of the properties as a
+##'     named character vector. Compare to the \code{fields} method on
+##'     \link[methods:setRefClass]{a reference class generator}}.
+##'   \item{}{\code{as.list(x)}: Returns a named list of the property values.}
 ##' }
 ##' @name PropertySet-class
 ##' @title PropertySet-class
 ##' @author Michael Lawrence, Tengfei Yin
 ##' @rdname PropertySet-class
 setRefClass("PropertySet", contains = "VIRTUAL",
+            fields = c(declareSignal(changed(name))),
             methods = list(
               properties = function() {
                 fieldClasses <- getRefClass()$fields()
@@ -77,8 +31,42 @@ setRefClass("PropertySet", contains = "VIRTUAL",
                 fieldClasses <- fieldClasses[fieldNames]
                 names(fieldClasses) <- sub("^\\.", "", fieldNames)
                 fieldClasses[!fieldClasses %in% "Signal"]
+              },
+              initialize = function(...) {
+                ### qualifier is necessary for subclasses in other
+                ### packages to work, unless we export it
+                objectProperties:::PropertySet_initSignals(.self)
+                callSuper(...)
               }))
 
+## Connect and synchronize global/individual property changed signals.
+##
+## Factored this out to avoid annoying static code analysis warning
+## from sharing a variable between closures.
+PropertySet_initSignals <- function(x) {
+  ## forward individual signals to global signal
+  propNames <- names(x$properties())
+  signalNames <- paste(propNames, "Changed", sep = "")
+  lapply(signalNames, function(signalName) {
+    signal <- x[[signalName]]
+    signal$connect(function() {
+      skipOneEmission <<- TRUE # avoids infinite recursion
+      x$changed$emit(signalName)
+    })
+  })
+  ## forward global signal to individual signals
+### FIXME: is.environment(x) is TRUE, but coercion seems necessary here - why?
+  signals <- mget(signalNames, as.environment(x))
+  skipOneEmission <- FALSE
+  x$changed$connect(function(name) {
+    signal <- signals[[name]]
+    if (is.null(signal))
+      stop("Unknown signal: ", name)
+    if (!skipOneEmission)
+      signal$emit()
+    else skipOneEmission <<- FALSE
+  })
+}
 
 ##' Convenience function for defining a set of reference class fields
 ##' that signals when set.
@@ -99,7 +87,7 @@ setRefClass("PropertySet", contains = "VIRTUAL",
 ##' @author Michael Lawrence, Tengfei Yin
 ##' @example objectProperties/inst/examples/properties.R
 ##' @export
-properties <- function(fields, prototype = list(), signalName = "changed")
+properties <- function(fields, prototype = list())
 {
   if (!length(fields))
     return(list())
@@ -131,7 +119,6 @@ properties <- function(fields, prototype = list(), signalName = "changed")
         .fieldName <<- val
         if (hasPrototype) initName <<- TRUE
         if (!identical(oldVal, .fieldName)) {
-          signalName$emit(fieldName)
           thisSignal$emit()
         }
       }
@@ -140,8 +127,7 @@ properties <- function(fields, prototype = list(), signalName = "changed")
             thisSignal = as.name(thisSignal),
             initName = as.name(initName),
             hasPrototype = hasPrototype,
-            prototype = prototype,
-            signalName = as.name(signalName)))))
+            prototype = prototype))))
   }, fields, names(fields), .fieldNames, .initNames, hasPrototype,
      prototype[names(fields)], paste(names(fields), "Changed", sep = ""))
   indSigs <- lapply(names(fields), function(nm) {
@@ -151,7 +137,6 @@ properties <- function(fields, prototype = list(), signalName = "changed")
   c(activeFields, structure(fields, names = .fieldNames),
     structure(rep("logical", sum(hasPrototype)),
               names = .initNames[hasPrototype]),
-    fieldWithPrototype(signalName, "Signal", Signal(name)),
     unlist(indSigs))
 }
 
