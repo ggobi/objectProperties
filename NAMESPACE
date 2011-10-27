@@ -1,4 +1,5 @@
-import(objectSignals)
+importFrom(objectSignals, declareSignal, Signal, fieldWithPrototype)
+
 exportClasses(PropertySet, Color, ColorEnum, GlyphEnum,
               SingleEnum, MultipleEnum, Enum,
               PositiveInteger, NonnegativeInteger,
