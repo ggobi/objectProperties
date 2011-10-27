@@ -15,6 +15,11 @@
 ##'     \link[methods:setRefClass]{a reference class generator}}.
 ##'   \item{}{\code{as.list(x)}: Returns a named list of the property values.}
 ##' }
+##'
+##' When any property in the set changes, the \code{changed(name)}
+##' signal is emitted, where \code{name} is the name of the property
+##' that changed.
+##' 
 ##' @name PropertySet-class
 ##' @title PropertySet-class
 ##' @author Michael Lawrence, Tengfei Yin
@@ -81,10 +86,6 @@ PropertySet_initSignals <- function(x) {
 ##' @title Properties signaling fileds 
 ##' @param fields list of names of the field and associated fields class 
 ##' @param prototype A list of values declaring a default value for a field.
-##' @param signalName Default name is "changed". A global signal for
-##' properties are defined with this specified name, whichever the
-##' properties changed, this signal will be emitted and the name of
-##' trigered field will be captured. Please check the example.
 ##' @return A list that is easily concatenated into the field list
 ##' @author Michael Lawrence, Tengfei Yin
 ##' @example objectProperties/inst/examples/properties.R
