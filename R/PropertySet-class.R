@@ -120,6 +120,8 @@ properties <- function(fields = list(), prototype = list())
           if (inherits(coercedVal, "try-error"))
             stop("Cannot set an object of type '", class(val), "' on '",
                  fieldName, "', a property of type '", fieldClass, "'")
+          else if (!isTRUE(msg <- validObject(coercedVal, TRUE)))
+            stop("Attempt to set invalid value on '", fieldName, "': ", msg)
           else val <- coercedVal
         }
         ## careful here; if field is active binding, it might not change
