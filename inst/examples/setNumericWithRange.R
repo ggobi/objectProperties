@@ -6,3 +6,9 @@ pars <- par.gen$new(size = new(newclass, 5))
 pars$size #current value is 5
 pars$size <- 300 # out of range error
 pars$size <- 10 #works
+
+## Positive Integer
+par.gen <- setRefClass("PI", properties(list(size  = "PositiveInteger"),
+                                        list(size = PositiveInteger(2))))
+obj <- par.gen$new()
+obj$size <- -1
