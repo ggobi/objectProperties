@@ -21,18 +21,23 @@ design a slider widget of such a property, let's say, a alpha blending slider.}
 \item{where}{the environment in which to store or remove the definition.
 Defaults to the top-level environment of the calling function.}
 }
-\examples{newclass <- setNumericWithRange("Numeric", min = 1, max = 100)
+\examples{
+newclass <- setNumericWithRange("Numeric", min = 1, max = 100)
 newclass
 par.gen <- setRefClass("Graph", properties(list(size = newclass)))
 ## pars <- par.gen$new(size = new(newclass, 200)) # out of range
 pars <- par.gen$new(size = new(newclass, 5))
 pars$size #current value is 5
-pars$size <- 300 # out of range error
+try(pars$size <- 300) # out of range error
 pars$size <- 10 #works
 
 ## Positive Integer
 par.gen <- setRefClass("PI", properties(list(size  = "PositiveInteger"),
                                         list(size = PositiveInteger(2))))
 obj <- par.gen$new()
-obj$size <- -1}
+## error
+try(obj$size <- -1)
+obj$size <- 3
+
+}
 
