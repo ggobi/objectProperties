@@ -19,7 +19,9 @@
 ##' When any property in the set changes, the \code{changed(name)}
 ##' signal is emitted, where \code{name} is the name of the property
 ##' that changed.
-##' 
+##' @example objectProperties/inst/examples/PropertySet.R
+##' @rdname PropertySet-class
+##' @aliases setPropertySet
 ##' @name PropertySet-class
 ##' @title PropertySet-class
 ##' @author Michael Lawrence, Tengfei Yin
@@ -160,6 +162,7 @@ properties <- function(fields = list(), prototype = list())
 ##' @param ... additional arguments to \code{setRefClass}
 ##' @param where the environment in which to define the class
 ##' @return the class generator object
+##' @rdname PropertySet-class
 ##' @author Michael Lawrence
 setPropertySet <- function(Class, fields = list(), prototype = list(),
                            contains = "PropertySet", ...,

@@ -35,9 +35,8 @@ obj <- NegativeInteger(-1)
 obj <- NonpositiveInteger(0)
 ## setting as properties
 filt.gen <- setRefClass("Filter",
-            properties(list(cutoff = "NonnegativeInteger",
-            weight = "PositiveInteger")),
-            contains = "PropertySet")
+properties(list(cutoff = "NonnegativeInteger",
+weight = "PositiveInteger")), contains = "PropertySet")
 ## new property instance
 obj <- filt.gen$new(cutoff = 0, weight = 1)
 obj$properties()
