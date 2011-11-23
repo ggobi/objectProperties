@@ -10,8 +10,8 @@ export(setSingleEnum, setMultipleEnum,
        setColorEnum, setGlyphEnum,
        PositiveInteger, NonnegativeInteger,
        NegativeInteger, NonpositiveInteger,
-       setNumericWithRange)
+       setNumericWithRange, Color)
 
 exportMethods(as.list)
 
-export(properties, setPropertySet)
+export(properties, setPropertySet, Color)

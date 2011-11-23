@@ -88,29 +88,15 @@ NonpositiveInteger <- function(object){
   new("NonpositiveInteger", object)
 }
 
-##' This class creator is used to define a special property for numeric range,
-##' which could be used for UI design and could be setted as signaling field,
-##' so it will support validation on the input.
-##'
-##' The purpose of creating such a class genenrator is to define a special
-##' range properties which could be set as singaling field, such as \code{Properties}
-##' object. Then validation will be turned on automatically to make sure the current
-##' value is within the defined range. This is particular useful when you try to
-##' design a slider widget of such a property, let's say, a alpha blending slider.
-##' @title Define a speicific range object
-##' @param prefix Prefix for new class name.
-##' @param min Minimal value for this range object.
-##' @param max Maximal value for this range object.
-##' @param where the environment in which to store or remove the definition.
-##' Defaults to the top-level environment of the calling function.
-##' @return A S4 class name.
-##' @aliases NumericWithMin0Max1-class
-##' @aliases setNumericWithRange
-##' @author Tengfei Yin
-##' @example objectProperties/inst/examples/setNumericWithRange.R
+## virtual class
+setClass("NumericWithRange", contains = c("VIRTUAL"),
+         representation(min = "numeric",
+                       max = "numeric"))
+
 setNumericWithRange <- function(prefix, min, max, where = topenv(parent.frame())){
   cls <- paste(prefix, "With", "Min", min, "Max", max, sep = "")
-  setClass(cls, contains = "numeric",
+  setClass(cls, contains = c("NumericWithRange", "numeric"),
+           prototype = prototype(min = min, max = max),
            validity = function(object){
              if(object<min | object >max)
                paste("values must be within", min, "and", max)
