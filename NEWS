@@ -3,6 +3,15 @@ Major change in different version
 ============================================================
 
 ------------------------------------------------------------
+Version 0.6.3
+------------------------------------------------------------
+* submit to CRAN on 2011-12-11
+* fix example errors due to change in methods, setMethod return a 
+  generator function
+* adding Color constructor
+
+
+------------------------------------------------------------
 Version 0.6.2
 ------------------------------------------------------------
 * add validObject back to active field
