@@ -1,13 +1,11 @@
 ## ----------------------------------------------------------------------
 ##                   setSingleEnum
 ## ----------------------------------------------------------------------
-ShapeEnumClassName <- setSingleEnum("Shape",
+ShapeEnum.gen <- setSingleEnum("Shape",
                                 levels = c("circle", "line", "rectangle"))
 
-## notice: following code doesn't work
-ShapeEnumClassName
-obj <- new(ShapeEnumClassName, "circle")
-## this is equivilent to
+obj <- ShapeEnum.gen("circle")
+obj
 obj <- new("ShapeSingleEnum", "circle")
 obj
 obj <- "triangle" # doesn't check, because it's not signal field.
@@ -28,7 +26,7 @@ class(pars$shape)# still a SingleEnum
 ## ----------------------------------------------------------------------
 ##                   setMultipleEnum
 ## ----------------------------------------------------------------------
-ShapeEnumClassName <- setMultipleEnum("Shape",
+ShapeEnum.gen <- setMultipleEnum("Shape",
                                 levels = c("circle", "line", "rectangle"))
 
 par.gen <- setRefClass("Graph",
@@ -41,10 +39,10 @@ pars$shape
 class(pars$shape)# still a MultipleEnum
 
 ## Color Single Enum
-bgColorSingleEnum <- setColorEnum("bgColor", levels = c("black", "white", "gray"))
-obj <- new(bgColorSingleEnum, "black")
+bgColorSingleEnum.gen <- setColorEnum("bgColor", levels = c("black", "white", "gray"))
+obj <- bgColorSingleEnum.gen("black")
 obj
 ## Glyph Single Enum
-PointSizeSingleEnum <- setGlyphEnum("PointSize", levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
-obj <- new(PointSizeSingleEnum, "1")
+PointSizeSingleEnum.gen <- setGlyphEnum("PointSize", levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
+obj <- PointSizeSingleEnum.gen("1")
 obj

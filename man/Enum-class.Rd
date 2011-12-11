@@ -23,9 +23,11 @@ and return the class name.
 
 The \code{Enum} class is a Class union for \code{SingleEnum} and \code{MultipleEnum}
 
-\code{Color} class is a special character, this properties could be used for creating
-a widgets which showing a color picker pallete and a text input field, a simple
-character object will be only treated as simple text in the UI.
+\code{Color} class is a special character, this properties could be used
+for creating a widgets which showing a color picker pallete and a text
+input field, a simple character object will be only treated as simple
+text in the UI. \code{Color} class could be constructed by constructor
+\code{Color}.
 
 \code{ColorEnum} class is a VIRTUAL class, which including a set of
 \code{SingleEnum} subclass, when creating widget based on this property,
@@ -54,6 +56,7 @@ subclass which is also a \code{SingleEnum}.}
 \alias{setSingleEnum}
 \alias{Enum-class}
 \alias{Color-class}
+\alias{Color}
 \alias{ColorEnum-class}
 \alias{setColorEnum}
 \alias{GlyphEnum-class}
@@ -67,16 +70,15 @@ calling \code{setSingleEnum}.}
 \item{where}{the environment in which to store or remove the definition.
 Defaults to the top-level environment of the calling function.}
 }
-\examples{## ----------------------------------------------------------------------
+\examples{
+## ----------------------------------------------------------------------
 ##                   setSingleEnum
 ## ----------------------------------------------------------------------
-ShapeEnumClassName <- setSingleEnum("Shape",
+ShapeEnum.gen <- setSingleEnum("Shape",
                                 levels = c("circle", "line", "rectangle"))
 
-## notice: following code doesn't work
-ShapeEnumClassName
-obj <- new(ShapeEnumClassName, "circle")
-## this is equivilent to
+obj <- ShapeEnum.gen("circle")
+obj
 obj <- new("ShapeSingleEnum", "circle")
 obj
 obj <- "triangle" # doesn't check, because it's not signal field.
@@ -97,7 +99,7 @@ class(pars$shape)# still a SingleEnum
 ## ----------------------------------------------------------------------
 ##                   setMultipleEnum
 ## ----------------------------------------------------------------------
-ShapeEnumClassName <- setMultipleEnum("Shape",
+ShapeEnum.gen <- setMultipleEnum("Shape",
                                 levels = c("circle", "line", "rectangle"))
 
 par.gen <- setRefClass("Graph",
@@ -110,11 +112,12 @@ pars$shape
 class(pars$shape)# still a MultipleEnum
 
 ## Color Single Enum
-bgColorSingleEnum <- setColorEnum("bgColor", levels = c("black", "white", "gray"))
-obj <- new(bgColorSingleEnum, "black")
+bgColorSingleEnum.gen <- setColorEnum("bgColor", levels = c("black", "white", "gray"))
+obj <- bgColorSingleEnum.gen("black")
 obj
 ## Glyph Single Enum
-PointSizeSingleEnum <- setGlyphEnum("PointSize", levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
-obj <- new(PointSizeSingleEnum, "1")
-obj}
+PointSizeSingleEnum.gen <- setGlyphEnum("PointSize", levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
+obj <- PointSizeSingleEnum.gen("1")
+obj
+}
 

@@ -22,11 +22,10 @@ design a slider widget of such a property, let's say, a alpha blending slider.}
 Defaults to the top-level environment of the calling function.}
 }
 \examples{
-newclass <- setNumericWithRange("Numeric", min = 1, max = 100)
-newclass
-par.gen <- setRefClass("Graph", properties(list(size = newclass)))
+num1to100.gen <- setNumericWithRange("Numeric", min = 1, max = 100)
+par.gen <- setRefClass("Graph", properties(list(size = num1to100.gen@className)))
 ## pars <- par.gen$new(size = new(newclass, 200)) # out of range
-pars <- par.gen$new(size = new(newclass, 5))
+pars <- par.gen$new(size = num1to100.gen(5))
 pars$size #current value is 5
 try(pars$size <- 300) # out of range error
 pars$size <- 10 #works
@@ -38,6 +37,5 @@ obj <- par.gen$new()
 ## error
 try(obj$size <- -1)
 obj$size <- 3
-
 }
 
