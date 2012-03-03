@@ -1,5 +1,7 @@
+setClass("Enum", contains = "character")
+
 setClass("SingleEnum", representation(levels = "character"),
-         contains = c("character"))
+         contains = "Enum")
 
 setMethod("initialize", "SingleEnum", function(.Object, ...) {
   if (!length(list(...)))
@@ -8,9 +10,7 @@ setMethod("initialize", "SingleEnum", function(.Object, ...) {
 })
 
 setClass("MultipleEnum", representation(levels = "character"),
-         contains = c("character"))
-
-setClassUnion("Enum", c("SingleEnum","MultipleEnum"))
+         contains = "Enum")
 
 setSingleEnum <- function(prefix, levels,
                           contains = character(),
