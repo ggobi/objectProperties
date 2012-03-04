@@ -1,3 +1,5 @@
+import(methods)
+
 importFrom(objectSignals, declareSignal, Signal, fieldWithPrototype)
 
 exportClasses(PropertySet, Color, ColorEnum, GlyphEnum,
