@@ -49,7 +49,8 @@ of \code{GlyphEnum} and it return a class name.}
 subclass.\code{setMultipleEnum} return a class name for \code{MultipleEnum} subclass.
 \code{setColorEnum} return a class name for \code{ColorEnum} subclass which is also
 a \code{SingleEnum}. \code{setGlyphEnum} return a class name for \code{GlyphEnum}
-subclass which is also a \code{SingleEnum}.}
+subclass which is also a \code{SingleEnum}. All those function return a
+generator function in R(>= 2.15)}
 \alias{SingleEnum-class}
 \alias{MultipleEnum-class}
 \alias{setMultipleEnum}
@@ -77,8 +78,6 @@ Defaults to the top-level environment of the calling function.}
 ShapeEnum.gen <- setSingleEnum("Shape",
                                 levels = c("circle", "line", "rectangle"))
 
-obj <- ShapeEnum.gen("circle")
-obj
 obj <- new("ShapeSingleEnum", "circle")
 obj
 obj <- "triangle" # doesn't check, because it's not signal field.
@@ -113,11 +112,9 @@ class(pars$shape)# still a MultipleEnum
 
 ## Color Single Enum
 bgColorSingleEnum.gen <- setColorEnum("bgColor", levels = c("black", "white", "gray"))
-obj <- bgColorSingleEnum.gen("black")
-obj
+obj <- new("bgColorSingleEnum", "white")
 ## Glyph Single Enum
 PointSizeSingleEnum.gen <- setGlyphEnum("PointSize", levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
-obj <- PointSizeSingleEnum.gen("1")
+obj <- new("PointSizeSingleEnum", "1")
 obj
 }
-

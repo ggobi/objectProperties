@@ -6,6 +6,7 @@ exportClasses(PropertySet, Color, ColorEnum, GlyphEnum,
               SingleEnum, MultipleEnum, Enum,
               PositiveInteger, NonnegativeInteger,
               NegativeInteger, NonpositiveInteger,
+              NumericWithRange,
               NumericWithMin0Max1)
 
 export(setSingleEnum, setMultipleEnum,
