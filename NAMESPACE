@@ -6,14 +6,15 @@ exportClasses(PropertySet, Color, ColorEnum, GlyphEnum,
               SingleEnum, MultipleEnum, Enum,
               PositiveInteger, NonnegativeInteger,
               NegativeInteger, NonpositiveInteger,
-              NumericWithRange,
+              NumericWithRange, IntegerWithRange,
               NumericWithMin0Max1)
 
 export(setSingleEnum, setMultipleEnum,
        setColorEnum, setGlyphEnum,
        PositiveInteger, NonnegativeInteger,
        NegativeInteger, NonpositiveInteger,
-       setNumericWithRange, Color)
+       setNumericWithRange, setIntegerWithRange,
+       Color)
 
 exportMethods(as.list)
 
