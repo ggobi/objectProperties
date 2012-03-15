@@ -12,6 +12,8 @@ setMethod("initialize", "SingleEnum", function(.Object, ...) {
 setClass("MultipleEnum", representation(levels = "character"),
          contains = "Enum")
 
+
+
 setSingleEnum <- function(prefix, levels,
                           contains = character(),
                           where = topenv(parent.frame()))
@@ -47,6 +49,20 @@ setMultipleEnum <- function(prefix, levels,
            where = where)
 }
 
+## levels
+setGeneric("levels")
+setMethod("levels", "Enum", function(x){
+  x@levels
+})
+
+setReplaceMethod("levels", "Enum", function(x, value){
+  x@levels <- value
+  if(validObject(x)){
+    x
+  }
+})
+
+
 setClass("Color", contains = c("character"))
 Color <- function(obj){
   new("Color", obj)
@@ -63,5 +79,23 @@ setGlyphEnum <- function(name, levels = character(), contains = character(),
                          where = topenv(parent.frame())){
   setSingleEnum(name, levels = levels, where = where, contains = c("GlyphEnum", contains))
 }
+
+
+
+
+SingleEnum <- function(object, where = topenv(parent.frame())){
+  .nm <- as.character(object)
+  .nms <- paste(.nm, "factor", sep = "")
+  f.gen <- setSingleEnum(.nms, levels = levels(object), where = where)
+  f.gen(as.character(object))
+}
+
+MultipleEnum <- function(object, where = topenv(parent.frame())){
+  .nm <- as.character(object)
+  .nms <- paste(.nm, "factor", sep = "")
+  f.gen <- setMultipleEnum(.nms, levels = levels(object), where = where)
+  f.gen(as.character(object))
+}
+
 
 

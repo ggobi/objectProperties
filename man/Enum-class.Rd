@@ -1,7 +1,29 @@
 \name{Enum-class}
 \alias{setSingleEnum}
+\alias{SingleEnum-class}
+\alias{MultipleEnum-class}
+\alias{setMultipleEnum}
+\alias{setSingleEnum}
+\alias{Enum-class}
+\alias{Color-class}
+\alias{Color}
+\alias{ColorEnum-class}
+\alias{setColorEnum}
+\alias{GlyphEnum-class}
+\alias{setGlyphEnum}
+\alias{levels}
+\alias{levels<-}
+\alias{levels<-,Enum-method}
+\alias{levels,Enum-method}
+\alias{SingleEnum}
+\alias{MultipleEnum}
 \title{Enumerated types}
-\usage{setSingleEnum(prefix, levels, contains=character(), where=topenv(parent.frame()))
+\usage{
+setSingleEnum(prefix, levels, contains=character(),
+              where=topenv(parent.frame()))
+
+\S4method{levels}{Enum}(x)
+
 }
 \description{R functions often have parameters with enumerated values. These are
 typically passed as a character vector and resolved using
@@ -51,25 +73,18 @@ subclass.\code{setMultipleEnum} return a class name for \code{MultipleEnum} subc
 a \code{SingleEnum}. \code{setGlyphEnum} return a class name for \code{GlyphEnum}
 subclass which is also a \code{SingleEnum}. All those function return a
 generator function in R(>= 2.15)}
-\alias{SingleEnum-class}
-\alias{MultipleEnum-class}
-\alias{setMultipleEnum}
-\alias{setSingleEnum}
-\alias{Enum-class}
-\alias{Color-class}
-\alias{Color}
-\alias{ColorEnum-class}
-\alias{setColorEnum}
-\alias{GlyphEnum-class}
-\alias{setGlyphEnum}
 \author{Tengfei Yin, Michael Lawrence}
-\arguments{\item{prefix}{Prefix for new subclass of \code{SingleEnum} or \code{MultipleEnum},
+\arguments{
+  \item{prefix}{Prefix for new subclass of \code{SingleEnum} or \code{MultipleEnum},
 e.g. if prefix is "Geom", the new subclass name would be \code{GeomSingleEnum} after
 calling \code{setSingleEnum}.}
 \item{levels}{An vector of characters which define the levels for this class.}
 \item{contains}{What class does this class extended besides \code{SingleEnum}.}
 \item{where}{the environment in which to store or remove the definition.
-Defaults to the top-level environment of the calling function.}
+  Defaults to the top-level environment of the calling function.}
+\item{x}{
+  A \code{Enum} object.
+}
 }
 \examples{
 ## ----------------------------------------------------------------------
@@ -117,4 +132,25 @@ obj <- new("bgColorSingleEnum", "white")
 PointSizeSingleEnum.gen <- setGlyphEnum("PointSize", levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
 obj <- new("PointSizeSingleEnum", "1")
 obj
+
+## ----------------------------------------------------------------------
+##                   change levels
+## ----------------------------------------------------------------------
+
+geomSingleEnum <- setSingleEnum("geom", c("rect", "triangle"))
+obj <- geomSingleEnum("rect")
+
+## change levels
+levels(obj)
+levels(obj) <- c("rect", "circle")
+
+## changed levels must include current value
+try(levels(obj) <- c("triangle", "circle"))
+
+## ----------------------------------------------------------------------
+##                   change levels
+## ----------------------------------------------------------------------
+obj <- factor("a", levels = letters)
+SingleEnum(obj)
+MultipleEnum(obj)
 }

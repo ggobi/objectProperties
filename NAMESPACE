@@ -3,7 +3,8 @@ import(methods)
 importFrom(objectSignals, declareSignal, Signal, fieldWithPrototype)
 
 exportClasses(PropertySet, Color, ColorEnum, GlyphEnum,
-              SingleEnum, MultipleEnum, Enum,
+              SingleEnum,
+              MultipleEnum, Enum,
               PositiveInteger, NonnegativeInteger,
               NegativeInteger, NonpositiveInteger,
               NumericWithRange, IntegerWithRange,
@@ -14,8 +15,9 @@ export(setSingleEnum, setMultipleEnum,
        PositiveInteger, NonnegativeInteger,
        NegativeInteger, NonpositiveInteger,
        setNumericWithRange, setIntegerWithRange,
+       SingleEnum, MultipleEnum,
        Color)
 
-exportMethods(as.list)
+exportMethods(as.list, levels, "levels<-")
 
 export(properties, setPropertySet, Color)
