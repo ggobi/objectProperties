@@ -129,7 +129,8 @@ class(pars$shape)# still a MultipleEnum
 bgColorSingleEnum.gen <- setColorEnum("bgColor", levels = c("black", "white", "gray"))
 obj <- new("bgColorSingleEnum", "white")
 ## Glyph Single Enum
-PointSizeSingleEnum.gen <- setGlyphEnum("PointSize", levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
+PointSizeSingleEnum.gen <- setGlyphEnum("PointSize", 
+  levels = c("1", "2", "5", "10"), contains = "GlyphEnum")
 obj <- new("PointSizeSingleEnum", "1")
 obj
 
