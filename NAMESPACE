@@ -2,6 +2,8 @@ import(methods)
 
 importFrom(objectSignals, declareSignal, Signal, fieldWithPrototype)
 
+importFrom(utils, head)
+
 exportClasses(PropertySet, Color, ColorEnum, GlyphEnum,
               SingleEnum,
               MultipleEnum, Enum,

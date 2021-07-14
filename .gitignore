@@ -1,3 +1,5 @@
 /R/.Rhistory
 /inst/examples/.Rhistory
 *~
+*.tar.gz
+*.Rcheck
